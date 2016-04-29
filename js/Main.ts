@@ -4,11 +4,13 @@
     ///<reference path="base.ts"/>
 
 module myapp{
+
     export class Main{
         constructor(opt:any){
             for(var str in opt)this[str] = opt[str];
         }
     }
+
 }
 
 $(document).ready(function(){
