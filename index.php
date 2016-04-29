@@ -19,6 +19,23 @@
 </head>
 <body>
 <div class="container">
+    <div class="row">
+        
+
+    </div>
+    <script src="libs/xls.min.js" ></script>
+    <script src="js/StaticObject.js" ></script>
+    <script src="js/Utils.js" ></script>
+    <script src="js/Main.js" ></script>
+    <script>
+        $(document).ready(function(){
+            var options:any = {
+
+            }
+            var app = new myapp.Main(options);
+        })
+
+    </script>
 
 </div>
 </body>

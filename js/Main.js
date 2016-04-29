@@ -13,8 +13,4 @@ var myapp;
     }());
     myapp.Main = Main;
 })(myapp || (myapp = {}));
-$(document).ready(function () {
-    var options = {};
-    var app = new myapp.Main(options);
-});
 //# sourceMappingURL=Main.js.map

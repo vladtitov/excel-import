@@ -4,7 +4,6 @@
     ///<reference path="base.ts"/>
 
 module myapp{
-
     export class Main{
         constructor(opt:any){
             for(var str in opt)this[str] = opt[str];
@@ -13,9 +12,3 @@ module myapp{
 
 }
 
-$(document).ready(function(){
-    var options:any = {
-
-    }
-    var app = new myapp.Main(options);
-})
