@@ -14,7 +14,7 @@ module myapp{
 }
 
 $(document).ready(function(){
-    var options:any={
+    var options:any = {
 
     }
     var app = new myapp.Main(options);
