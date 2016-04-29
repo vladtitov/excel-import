@@ -1,10 +1,10 @@
 <?php
+require_once ('config.php');
 class DBConnector{
 	var  $db;
 	var $stmt;
 	function DBConnector(){
-			$this->db = new PDO(DATABASE);
-
+			$this->db = new PDO('sqlite:'.DATABASE);
 	}
 
 	function delete($sql){
