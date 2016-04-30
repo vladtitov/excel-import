@@ -1,12 +1,16 @@
 <?php
-$file = $_FILES[0];
+$file = $_FILES['myfile'];
 $result = returnFile($file,'temp');
 if(isset($out->success)) $out->result='service/'.$out->result;
 header('Content-type: application/json');
-echo json_encode($out);
+$result -> result = 'service/temp/'.$result -> result;
+echo json_encode($result);
 
 function returnFile($file,$folder){
     $out=new stdClass();
+//    var_dump($file);
+//    return $file;
+//    $file = $file['file'];
     if ($file["error"] > 0){
         $out->error= $file["error"];
         switch ($file["error"]) {

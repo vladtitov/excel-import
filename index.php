@@ -20,6 +20,10 @@
 <body>
 <div class="container">
     <div class="row">
+        <div>
+            <a id="btn-plus" class="btn fa fa-plus"></a>
+            
+        </div>
         
 
     </div>
@@ -29,8 +33,9 @@
     <script src="js/Main.js" ></script>
     <script>
         $(document).ready(function(){
-            var options:any = {
-
+            var options = {
+                url_ret:'service/return-file.php',
+                lala: 35
             }
             var app = new myapp.Main(options);
         })
