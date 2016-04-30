@@ -1,9 +1,14 @@
 <?php
 $file = $_FILES['myfile'];
 $result = returnFile($file,'temp');
-if(isset($out->success)) $out->result='service/'.$out->result;
+if(isset($result->success) && $result->success='success' ) {
+    require_once 'ExcelReader/reader.php';
+    $reader = new Spreadsheet_Excel_Reader();
+    $reader->setOutputEncoding('CP1251');
+    $reader->read('temp/'.$result->result);
+    $result=  $reader->sheets;
+}
 header('Content-type: application/json');
-$result -> result = 'service/temp/'.$result -> result;
 echo json_encode($result);
 
 function returnFile($file,$folder){

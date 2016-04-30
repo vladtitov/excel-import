@@ -228,7 +228,7 @@
     <script src="libs/xls.min.js" ></script>
     <script src="js/StaticObject.js" ></script>
     <script src="js/Utils.js" ></script>
-    <script src="js/Main.js" ></script>
+    <script src="js/Main2.js" ></script>
     <script>
         $(document).ready(function(){
             var options = {
