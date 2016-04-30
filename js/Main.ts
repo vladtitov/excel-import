@@ -4,8 +4,22 @@
     ///<reference path="base.ts"/>
 
 module myapp{
+    declare var XLS: any;
     export class Main{
         private url_ret: string;
+
+        parseXLS(data){
+            var book = XLS.read(data, {type: 'binary'});
+            console.log(book);
+        }
+
+        loadXLS (url: string): void {
+            // $.get(url).done((res)=> this.parseXLS(res));
+            console.log(url);
+            var book = XLS.readFile(url);
+
+        }
+
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
@@ -34,7 +48,9 @@ module myapp{
                         contentType: false,
                         processData: false
                     }).done((res)=>{
-                        console.log(res);
+                        // console.log(res);
+                        this.loadXLS(res.result);
+
                     })
                 })
             })

@@ -31,11 +31,21 @@ var myapp;
                         contentType: false,
                         processData: false
                     }).done(function (res) {
-                        console.log(res);
+                        // console.log(res);
+                        _this.loadXLS(res.result);
                     });
                 });
             });
         }
+        Main.prototype.parseXLS = function (data) {
+            var book = XLS.read(data, { type: 'binary' });
+            console.log(book);
+        };
+        Main.prototype.loadXLS = function (url) {
+            // $.get(url).done((res)=> this.parseXLS(res));
+            console.log(url);
+            var book = XLS.readFile(url);
+        };
         return Main;
     }());
     myapp.Main = Main;

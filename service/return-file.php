@@ -30,7 +30,7 @@ function returnFile($file,$folder){
     }
 
     if (!file_exists($folder)) mkdir($folder, 0755, true);
-    $filename = time().'_'.$file["name"];
+    $filename = $file["name"];
     if(move_uploaded_file($file["tmp_name"],$folder.'/'.$filename)){
         $out->success='success';
         $out->result=$filename;
