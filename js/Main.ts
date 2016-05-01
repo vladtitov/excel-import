@@ -17,7 +17,32 @@ module myapp{
             // $.get(url).done((res)=> this.parseXLS(res));
             console.log(url);
             var book = XLS.readFile(url);
+        }
 
+        onPlusClick(plus) {
+            var input = $('<input type="file">').appendTo(plus.parent()).change(()=>{
+                console.log(input);
+                var val = input.val();
+
+                var el: HTMLInputElement = input.get(0);
+                var files: FileList = el.files;
+                var file: File = files[0];
+                var form: FormData = new FormData();
+                form.append('myfile', file);
+                input.remove();
+
+                $.ajax({
+                    url: this.url_ret,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: form,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done((res)=>{
+                    this.loadXLS(res.result);
+                })
+            })
         }
 
         constructor(opt:any){
@@ -25,37 +50,8 @@ module myapp{
                 this[str] = opt[str];
             }
             var plus = $('#btn-plus').click(()=>{
-
-                var input = $('<input type="file">').appendTo(plus.parent()).change(()=>{
-                    console.log(input);
-                    var val = input.val();
-                    // $.post(this.url_ret, {file: val}).done((res)=>{
-                    //     console.log(res);
-                    // })
-
-                    var el: HTMLInputElement = input.get(0);
-                    var files: FileList = el.files;
-                    var file: File = files[0];
-                    var form: FormData = new FormData();
-                    form.append('myfile', file);
-                    
-                    $.ajax({
-                        url: this.url_ret,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: form,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    }).done((res)=>{
-                        // console.log(res);
-                        this.loadXLS(res.result);
-
-                    })
-                })
+                this.onPlusClick(plus);
             })
         }
     }
-
 }
-
