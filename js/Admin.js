@@ -7,6 +7,7 @@ var myapp;
     var Main = (function () {
         function Main(opt) {
             var _this = this;
+            this.url_get_data = 'service/get-data.php?filename=allData.json';
             for (var str in opt) {
                 this[str] = opt[str];
             }
@@ -18,7 +19,7 @@ var myapp;
                     var form = new FormData();
                     form.append('myfile', file);
                     $.ajax({
-                        url: _this.url_ret,
+                        url: _this.url_upload_temp,
                         type: 'POST',
                         dataType: 'json',
                         data: form,
@@ -26,7 +27,11 @@ var myapp;
                         contentType: false,
                         processData: false
                     }).done(function (res) {
-                        _this.onData(res);
+                        console.log(res);
+                        $.get(_this.url_get_excel, { filename: res.result }).done(function (res) {
+                            _this.SetData(res);
+                        });
+                        // this.onData(res);
                     });
                 });
             });
@@ -41,8 +46,30 @@ var myapp;
             });
             console.log(out);
         };
+        Main.prototype.InitTable = function () {
+            var collection = new Table.AllPersonCollection({});
+            var tableView = new Table.AllPersonView({ collection: collection });
+            this.collection = collection;
+        };
+        Main.prototype.CallData = function () {
+            $.get(this.url_get_data).done(function (res) {
+                console.log(res);
+            });
+        };
+        Main.prototype.SetData = function (res) {
+            this.collection.set(res);
+        };
         return Main;
     }());
     myapp.Main = Main;
 })(myapp || (myapp = {}));
-//# sourceMappingURL=Main2.js.map
+$(document).ready(function () {
+    var options = {
+        url_upload_temp: 'service/upload-temp.php',
+        url_get_excel: 'service/get-excel.php',
+        url_save_data: 'service/save-data.php'
+    };
+    var app = new myapp.Main(options);
+    app.InitTable();
+});
+//# sourceMappingURL=Admin.js.map
