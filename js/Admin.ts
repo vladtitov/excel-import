@@ -18,10 +18,23 @@ module myapp{
 
 
     }
+    interface TableResult {
+        date: number;
+        start: number;
+        end: number;
+        event: string;
+        location: string;
+    }
+
     declare var XLS: any;
     export class Main{
 
         private url_ret: string;
+        private url_upload_temp: string;
+        private url_get_excel: string;
+        private url_save_data: string;
+        private url_get_data: string = 'service/get-data.php?filename=allData.json';
+
         onData(data:XLSresult[]):void{
             var out:string[][]=[];
             var sheet = data[0];
@@ -32,6 +45,24 @@ module myapp{
             })
             console.log(out);
         }
+        private collection: Table.AllPersonCollection;
+
+        InitTable (){
+            var collection: Table.AllPersonCollection = new Table.AllPersonCollection({});
+            var tableView: Table.AllPersonView = new Table.AllPersonView({collection: collection});
+            this.collection = collection;
+        }
+
+        CallData (){
+            $.get(this.url_get_data).done((res)=>{
+                console.log(res);
+            })
+        }
+
+        SetData (res){
+            this.collection.set(res);
+        }
+
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
@@ -45,7 +76,7 @@ module myapp{
                     var form: FormData = new FormData();
                     form.append('myfile', file);
                     $.ajax({
-                        url: this.url_ret,
+                        url: this.url_upload_temp,
                         type: 'POST',
                         dataType: 'json',
                         data: form,
@@ -53,7 +84,11 @@ module myapp{
                         contentType: false,
                         processData: false
                     }).done((res)=>{
-                      this.onData(res);
+                        console.log(res);
+                        $.get(this.url_get_excel, {filename: res.result}).done((res)=>{
+                            this.SetData(res);
+                        })
+                      // this.onData(res);
                     })
                 })
             })
@@ -61,4 +96,13 @@ module myapp{
     }
 
 }
+$(document).ready(function(){
+    var options = {
+        url_upload_temp:'service/upload-temp.php',
+        url_get_excel:'service/get-excel.php',
+        url_save_data:'service/save-data.php'
+    }
+    var app = new myapp.Main(options);
+    app.InitTable();
+})
 

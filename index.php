@@ -20,12 +20,6 @@
 <body>
 <div class="container">
     <div class="row">
-        <div>
-            <a id="btn-plus" class="btn fa fa-plus"></a>
-        </div>
-    </div>
-
-    <div class="row">
         <table class="table table-condensed table-one">
             <tbody>
                 <tr>
@@ -225,10 +219,10 @@
 
     </div>
 
-    <script src="libs/xls.min.js" ></script>
+<!--    <script src="libs/xls.min.js" ></script>-->
     <script src="js/StaticObject.js" ></script>
     <script src="js/Utils.js" ></script>
-    <script src="js/Main2.js" ></script>
+    <script src="js/Index.js" ></script>
     <script>
         $(document).ready(function(){
             var options = {

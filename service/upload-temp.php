@@ -31,7 +31,7 @@ function saveUploaded($file,$folder){
     $filename = $file["name"];
     if(move_uploaded_file($file["tmp_name"],$folder.'/'.$filename)){
         $out->success='success';
-        $out->result=$filename;
+        $out->result=$folder.'/'.$filename;
     }
     return $out;
 }
