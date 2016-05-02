@@ -7,10 +7,12 @@ var myapp;
     var Main = (function () {
         function Main(opt) {
             var _this = this;
-            this.url_get_data = 'service/get-data.php?filename=allData.json';
             for (var str in opt) {
                 this[str] = opt[str];
             }
+            this.$btnSave = $('#btn-save').click(function () {
+                _this.saveData();
+            });
             var plus = $('#btn-plus').click(function () {
                 var input = $('<input type="file">').appendTo(plus.parent()).change(function () {
                     var el = input.get(0);
@@ -36,28 +38,20 @@ var myapp;
                 });
             });
         }
-        Main.prototype.onData = function (data) {
-            var out = [];
-            var sheet = data[0];
-            console.log(data);
-            _.map(sheet.cells, function (item) {
-                console.log(item);
-                out.push(item);
-            });
-            console.log(out);
-        };
         Main.prototype.InitTable = function () {
             var collection = new Table.AllPersonCollection({});
             var tableView = new Table.AllPersonView({ collection: collection });
             this.collection = collection;
-        };
-        Main.prototype.CallData = function () {
-            $.get(this.url_get_data).done(function (res) {
-                console.log(res);
-            });
+            collection.fetch({ url: this.url_data, data: { username: this.username } });
         };
         Main.prototype.SetData = function (res) {
             this.collection.set(res);
+        };
+        Main.prototype.saveData = function () {
+            var data = this.collection.toJSON();
+            $.post(this.url_data + '?username=' + this.username, JSON.stringify(data)).done(function (res) {
+                console.log(res);
+            });
         };
         return Main;
     }());
@@ -67,7 +61,8 @@ $(document).ready(function () {
     var options = {
         url_upload_temp: 'service/upload-temp.php',
         url_get_excel: 'service/get-excel.php',
-        url_save_data: 'service/save-data.php'
+        url_data: 'service/my-data.php',
+        username: 'myname'
     };
     var app = new myapp.Main(options);
     app.InitTable();

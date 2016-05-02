@@ -4,6 +4,7 @@
     ///<reference path="base.ts"/>
 
 module myapp{
+    //import color = d3.color;
     interface CellInfo{
         raw:number;
         type:string;
@@ -32,42 +33,40 @@ module myapp{
         private url_ret: string;
         private url_upload_temp: string;
         private url_get_excel: string;
-        private url_save_data: string;
-        private url_get_data: string = 'service/get-data.php?filename=allData.json';
-
-        onData(data:XLSresult[]):void{
-            var out:string[][]=[];
-            var sheet = data[0];
-            console.log(data);
-            _.map(sheet.cells,function(item){
-                console.log(item)
-                out.push(item)
-            })
-            console.log(out);
-        }
+        private url_data: string;
+        private username:string;
         private collection: Table.AllPersonCollection;
 
+        private $btnSave:JQuery;
         InitTable (){
             var collection: Table.AllPersonCollection = new Table.AllPersonCollection({});
             var tableView: Table.AllPersonView = new Table.AllPersonView({collection: collection});
             this.collection = collection;
-        }
-
-        CallData (){
-            $.get(this.url_get_data).done((res)=>{
-                console.log(res);
-            })
+            collection.fetch({url:this.url_data,data:{username:this.username}});
         }
 
         SetData (res){
             this.collection.set(res);
+
+        }
+
+        saveData():void{
+        var data:any[] =  this.collection.toJSON();
+            $.post(this.url_data+'?username='+this.username,JSON.stringify(data)).done((res)=>{
+                console.log(res);
+            });
+
         }
 
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
             }
+            this.$btnSave = $('#btn-save').click(()=>{
+                this.saveData();
+            });
             var plus = $('#btn-plus').click(()=>{
+
 
                 var input = $('<input type="file">').appendTo(plus.parent()).change(()=>{
                     var el: HTMLInputElement = input.get(0);
@@ -100,7 +99,8 @@ $(document).ready(function(){
     var options = {
         url_upload_temp:'service/upload-temp.php',
         url_get_excel:'service/get-excel.php',
-        url_save_data:'service/save-data.php'
+        url_data:'service/my-data.php',
+        username:'myname'
     }
     var app = new myapp.Main(options);
     app.InitTable();

@@ -20,46 +20,63 @@
     
 </head>
 <body>
-<div class="container">
+<div id="Table1" class="container">
     <div class="row">
-        <div class="pull-left">
-            <a id="btn-plus" class="btn">
-                <span class="fa fa-exchange"></span>
-                <span>Import</span>
-            </a>
-        </div>
-        <div class="pull-left">
-            <a id="btn-save" class="btn">
-                <span class="fa fa-save"></span>
-                <span>Save</span>
-            </a>
-        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading tools">
+                <style>
+                   #Table1 .tools>div{
+                        display: inline;
+                    }
+
+                    #Table1 .panel-body{
+                        height: 600px;
+                        overflow: auto;
+                    }
+
+                </style>
+                    <div>
+                        <a id="btn-plus" class="btn">
+                            <span class="fa fa-file"></span>
+                            <span>Import</span>
+                        </a>
+                    </div>
+
+                    <div >
+                        <a id="btn-save" class="btn">
+                            <span class="fa fa-save"></span>
+                            <span>Save</span>
+                        </a>
+                    </div>
+            </div>
+            <div class="panel-body">
+                    <table id="tableone" class="table table-condensed">
+                        <script id="row-template" type="text/template">
+
+                            <td class="date">
+                                <span><%=date%></span>
+                            </td>
+                            <td class="start">
+                                <span><%=start%></span>
+                            </td>
+                            <td class="end">
+                                <span><%=end%></span>
+                            </td>
+                            <td class="event">
+                                <span><%=event%></span>
+                            </td>
+                            <td class="location">
+                                <span><%=location%></span>
+                            </td>
+                        </script>
+                        <tbody id="tablebody">
+
+                        </tbody>
+                    </table>
+            </div>
+
     </div>
 
-    <table id="tableone" class="table table-condensed">
-        <script id="row-template" type="text/template">
-            
-            <td class="date">
-                <span><%=date%></span>
-            </td>
-            <td class="start">
-                <span><%=start%></span>
-            </td>
-            <td class="end">
-                <span><%=end%></span>
-            </td>
-            <td class="event">
-                <span><%=event%></span>
-            </td>
-            <td class="location">
-                <span><%=location%></span>
-            </td>
-        </script>
-        <tbody id="tablebody">
-        
-        </tbody>
-    </table>
-</div>
 
 <!--    <script src="libs/xls.min.js" ></script>-->
     <script src="js/StaticObject.js" ></script>
