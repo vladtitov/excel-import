@@ -1,17 +1,10 @@
 <?php
 $file = $_FILES['myfile'];
-$result = returnFile($file,'temp');
-if(isset($result->success) && $result->success='success' ) {
-    require_once 'ExcelReader/reader.php';
-    $reader = new Spreadsheet_Excel_Reader();
-    $reader->setOutputEncoding('CP1251');
-    $reader->read('temp/'.$result->result);
-    $result=  $reader->sheets;
-}
+$result = saveUploaded($file,'temp');
 header('Content-type: application/json');
 echo json_encode($result);
 
-function returnFile($file,$folder){
+function saveUploaded($file,$folder){
     $out=new stdClass();
 //    var_dump($file);
 //    return $file;
