@@ -927,6 +927,8 @@ class Spreadsheet_Excel_Reader
      */
     function isDate($spos)
     {
+
+
         //$xfindex = GetInt2d(, 4);
         $xfindex = ord($this->data[$spos+4]) | ord($this->data[$spos+5]) << 8;
         //echo 'check is date '.$xfindex.' '.$this->formatRecords['xfrecords'][$xfindex]['type']."\n";

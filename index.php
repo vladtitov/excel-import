@@ -232,7 +232,7 @@
     <script>
         $(document).ready(function(){
             var options = {
-                url_ret:'service/return-file.php',
+                url_ret:'service/excel-to-json.php',
                 lala: 35
             }
             var app = new myapp.Main(options);

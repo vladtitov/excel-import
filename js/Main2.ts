@@ -4,53 +4,34 @@
     ///<reference path="base.ts"/>
 
 module myapp{
+    interface CellInfo{
+        raw:number;
+        type:string;
+    }
+    interface XLSresult{
+        maxcol:number;
+        maxrow:number;
+        numCols:number;
+        numRows:number;
+        cells:string[][];
+        celsInfo:CellInfo[][];
+
+
+    }
     declare var XLS: any;
     export class Main{
+
         private url_ret: string;
-
-
-        private parseSheet(sheet):void{
-            console.log(sheet);
-            var range = sheet['!range'];
-            for(var R = range.s.r; R <= range.e.r; ++R) {
-                for(var C = range.s.c; C <= range.e.c; ++C) {
-                    var cell_address = {c:C, r:R};
-                    console.log(cell_address);
-                }
-            }
-          //  var ar  = XLS.utils.sheet_to_json(sheet);
-          //  ar.forEach(function(item){
-          //      console.log(JSON.stringify(item));
-          //  })
-
-          console.log(ar);
-        }
-        parseXLS(data){
+        onData(data:XLSresult[]):void{
+            var out:string[][]=[];
+            var sheet = data[0];
             console.log(data);
-          var book = XLS.readAsBinaryString(data, {type: 'binary'});
-            //console.log(book);
+            _.map(sheet.cells,function(item){
+                console.log(item)
+                out.push(item)
+            })
+            console.log(out);
         }
-
-        loadXLS (url: string): void {
-            $.get(url).done((res)=> this.parseXLS(res));
-           // console.log(url);
-           // var book = XLS.readFile(url);
-
-        }
-
-        readFile(file:File):void{
-            var reader = new FileReader();
-            reader.onload = (e:any) =>{
-                var data = e.target.result;
-                var workbook = XLS.read(data, {type: 'binary'});
-                var firstName:string = workbook.SheetNames[0];
-                var sheet = workbook.Sheets[firstName];
-                this. parseSheet(sheet);
-                console.log(workbook);
-            };
-            reader.readAsBinaryString(file);
-        }
-
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
@@ -61,9 +42,6 @@ module myapp{
                     var el: HTMLInputElement = input.get(0);
                     var files: FileList = el.files;
                     var file: File = files[0];
-                  //  this.readFile(file);
-                   // return;
-
                     var form: FormData = new FormData();
                     form.append('myfile', file);
                     $.ajax({
@@ -75,9 +53,7 @@ module myapp{
                         contentType: false,
                         processData: false
                     }).done((res)=>{
-                        console.log(res);
-                      //  this.loadXLS(res.result);
-
+                      this.onData(res);
                     })
                 })
             })
