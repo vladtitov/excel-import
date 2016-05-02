@@ -1,12 +1,10 @@
 <?php
 $file = $_FILES['myfile'];
-$result = returnFile($file,'temp');
-if(isset($out->success)) $out->result='service/'.$out->result;
+$result = saveUploaded($file,'temp');
 header('Content-type: application/json');
-$result -> result = 'service/temp/'.$result -> result;
 echo json_encode($result);
 
-function returnFile($file,$folder){
+function saveUploaded($file,$folder){
     $out=new stdClass();
 //    var_dump($file);
 //    return $file;

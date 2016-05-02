@@ -228,11 +228,11 @@
     <script src="libs/xls.min.js" ></script>
     <script src="js/StaticObject.js" ></script>
     <script src="js/Utils.js" ></script>
-    <script src="js/Main.js" ></script>
+    <script src="js/Main2.js" ></script>
     <script>
         $(document).ready(function(){
             var options = {
-                url_ret:'service/return-file.php',
+                url_ret:'service/excel-to-json.php',
                 lala: 35
             }
             var app = new myapp.Main(options);
