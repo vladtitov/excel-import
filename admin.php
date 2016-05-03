@@ -38,7 +38,6 @@
 
     <table id="tableone" class="table table-condensed">
         <script id="row-template" type="text/template">
-            
             <td class="date">
                 <span><%=date%></span>
             </td>

@@ -41,6 +41,7 @@ var Table;
             var data = this.model.toJSON();
             data.date = moment.unix(data.date).format('MM DD YYYY');
             data.start = moment.unix(data.start).format('MM DD h:mm');
+            data.end = moment.unix(data.end).format('MM DD h:mm');
             this.$el.html(PersonView.template(data));
             return this;
         };
