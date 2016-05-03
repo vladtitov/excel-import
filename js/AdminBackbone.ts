@@ -1,9 +1,8 @@
 /**
  * Created by yrik6 on 18.04.2016.
  */
-///<reference path="../typings/jquery.d.ts"/>
-///<reference path="../typings/underscore.d.ts"/>
-///<reference path="../typings/backbone-global.d.ts"/>
+///<reference path="base.ts"/>
+    
     
 module Table {
     interface People {
@@ -26,7 +25,7 @@ module Table {
         }
     }
 
-    declare var moment: any;
+
     export class PersonView extends Backbone.View<Person> {
         static template:any = _.template( $('#row-template').html() );
         constructor (options: any) {
