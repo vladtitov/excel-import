@@ -2,7 +2,7 @@
  * Created by yrik6 on 18.04.2016.
  */
 ///<reference path="base.ts"/>
-    
+
     
 module Table {
     interface People {
@@ -31,6 +31,7 @@ module Table {
         constructor (options: any) {
             super(options);
             this.model.bind('remove', ()=>this.remove());
+           
         }
         
         remove (): PersonView  {
@@ -51,6 +52,7 @@ module Table {
         constructor(options:any) {
             super(options);
             for (var str in options) this[str] = options [str];
+            
         }
     }
 
