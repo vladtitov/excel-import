@@ -115,7 +115,25 @@
         </div>
 
     </div>
-    <div class="row footer" style="height:9vh; background: red">
+    <div id="Footer" class="row footer">
+        <style>
+            #Footer{
+                height: 9vh;
+                color: white;
+            }
+            #MovingTextRow{
+                margin-top: 2vh;
+                font-size: 3vh;
+            }
+
+        </style>
+        <div class="col-md-9">
+            <marquee id="MovingTextRow"  truespeed></marquee>
+            <script  src="js/MovingTextRow.js"></script>
+        </div>
+        <div class="col-md-3">
+
+        </div>
 
     </div>
 </div>
