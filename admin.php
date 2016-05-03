@@ -25,7 +25,7 @@
         <div class="panel panel-default">
             <div class="panel-heading tools">
                 <style>
-                   #Table1 .tools>div{
+                   #Table1 .tools>div, #Table1 .tools input{
                         display: inline;
                     }
 
@@ -42,7 +42,7 @@
                         </a>
                     </div>
 
-                    <div >
+                    <div class="pull-right" >
                         <a id="btn-save" class="btn">
                             <span class="fa fa-save"></span>
                             <span>Save</span>
@@ -52,7 +52,6 @@
             <div class="panel-body">
                     <table id="tableone" class="table table-condensed">
                         <script id="row-template" type="text/template">
-
                             <td class="date">
                                 <span><%=date%></span>
                             </td>
@@ -62,8 +61,8 @@
                             <td class="end">
                                 <span><%=end%></span>
                             </td>
-                            <td class="event">
-                                <span><%=event%></span>
+                            <td class="myevent">
+                                <span><%=myevent%></span>
                             </td>
                             <td class="location">
                                 <span><%=location%></span>

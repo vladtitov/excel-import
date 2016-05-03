@@ -21,7 +21,7 @@ var Table;
                 date: 0,
                 start: 0,
                 end: 0,
-                event: '',
+                myevent: '',
                 location: ''
             };
         };
@@ -31,7 +31,9 @@ var Table;
     var PersonView = (function (_super) {
         __extends(PersonView, _super);
         function PersonView(options) {
+            var _this = this;
             _super.call(this, options);
+            this.model.bind('remove', function () { return _this.remove(); });
         }
         PersonView.prototype.remove = function () {
             this.$el.remove();

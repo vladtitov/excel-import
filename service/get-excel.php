@@ -16,11 +16,12 @@ foreach($ar  as $row){
     $item = new stdClass();
     if($i++<2) continue;
 
+    if(count($row)<6) continue;
     if(isset($row[1])) $item->date = convertTime($row[1]);
     if(isset($row[2])) $item->start = convertTime($row[2]);
     if(isset($row[3])) $item->end = convertTime($row[3]);
-    if(isset($row[7])) $item->event = formatAccount($row[7]);
-    if(isset($row[4])) $item->location = $row[4];
+    $item->myevent = isset($row[7])? formatAccount($row[7]):'';
+    $item->location =  isset($row[4])?  $row[4]:'';
     $out[] = $item;
 }
 

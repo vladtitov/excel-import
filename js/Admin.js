@@ -14,6 +14,11 @@ var myapp;
                 _this.saveData();
             });
             var plus = $('#btn-plus').click(function () {
+                if (_this.$fileInput) {
+                    _this.$fileInput.remove();
+                    _this.$fileInput = null;
+                    return;
+                }
                 var input = $('<input type="file">').appendTo(plus.parent()).change(function () {
                     var el = input.get(0);
                     var files = el.files;
@@ -29,29 +34,43 @@ var myapp;
                         contentType: false,
                         processData: false
                     }).done(function (res) {
-                        console.log(res);
+                        //console.log(res);
                         $.get(_this.url_get_excel, { filename: res.result }).done(function (res) {
                             _this.SetData(res);
                         });
                         // this.onData(res);
                     });
+                    input.remove();
+                    _this.$fileInput = null;
                 });
+                _this.$fileInput = input;
             });
         }
         Main.prototype.InitTable = function () {
             var collection = new Table.AllPersonCollection({});
             var tableView = new Table.AllPersonView({ collection: collection });
             this.collection = collection;
-            collection.fetch({ url: this.url_data, data: { username: this.username } });
+        };
+        Main.prototype.loadData = function () {
+            this.collection.fetch({ url: this.url_data, data: { username: this.username } });
         };
         Main.prototype.SetData = function (res) {
+            console.log(res);
             this.collection.set(res);
         };
         Main.prototype.saveData = function () {
-            var data = this.collection.toJSON();
-            $.post(this.url_data + '?username=' + this.username, JSON.stringify(data)).done(function (res) {
-                console.log(res);
-            });
+            var _this = this;
+            if (confirm('You want to save a new data file?')) {
+                var data = this.collection.toJSON();
+                $.post(this.url_data + '?username=' + this.username, JSON.stringify(data)).done(function (res) {
+                    if (res.success == 'success') {
+                        alert('New data was saved on server');
+                        _this.loadData();
+                    }
+                    else
+                        alert('Error save data');
+                });
+            }
         };
         return Main;
     }());
@@ -66,5 +85,6 @@ $(document).ready(function () {
     };
     var app = new myapp.Main(options);
     app.InitTable();
+    app.loadData();
 });
 //# sourceMappingURL=Admin.js.map

@@ -23,7 +23,7 @@ module myapp{
         date: number;
         start: number;
         end: number;
-        event: string;
+        myevent: string;
         location: string;
     }
 
@@ -42,22 +42,35 @@ module myapp{
             var collection: Table.AllPersonCollection = new Table.AllPersonCollection({});
             var tableView: Table.AllPersonView = new Table.AllPersonView({collection: collection});
             this.collection = collection;
-            collection.fetch({url:this.url_data,data:{username:this.username}});
+
+        }
+
+        loadData():void{
+            this.collection.fetch({url:this.url_data,data:{username:this.username}});
         }
 
         SetData (res){
+            console.log(res);
             this.collection.set(res);
-
         }
 
         saveData():void{
-        var data:any[] =  this.collection.toJSON();
-            $.post(this.url_data+'?username='+this.username,JSON.stringify(data)).done((res)=>{
-                console.log(res);
-            });
+            if(confirm('You want to save a new data file?')){
+                var data:any[] =  this.collection.toJSON();
+                $.post(this.url_data+'?username='+this.username,JSON.stringify(data)).done((res)=>{
+
+                    if(res.success=='success') {
+                        alert('New data was saved on server');
+                        this.loadData();
+                    }
+                    else alert('Error save data')
+                });
+            }
+
 
         }
 
+        $fileInput:JQuery;
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
@@ -67,6 +80,11 @@ module myapp{
             });
             var plus = $('#btn-plus').click(()=>{
 
+                if(this.$fileInput){
+                    this.$fileInput.remove();
+                    this.$fileInput = null;
+                    return;
+                }
 
                 var input = $('<input type="file">').appendTo(plus.parent()).change(()=>{
                     var el: HTMLInputElement = input.get(0);
@@ -83,13 +101,16 @@ module myapp{
                         contentType: false,
                         processData: false
                     }).done((res)=>{
-                        console.log(res);
+                        //console.log(res);
                         $.get(this.url_get_excel, {filename: res.result}).done((res)=>{
                             this.SetData(res);
                         })
                       // this.onData(res);
                     })
+                    input.remove()
+                    this.$fileInput = null;
                 })
+                this.$fileInput = input;
             })
         }
     }
@@ -104,5 +125,6 @@ $(document).ready(function(){
     }
     var app = new myapp.Main(options);
     app.InitTable();
+    app.loadData();
 })
 

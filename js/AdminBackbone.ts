@@ -10,7 +10,7 @@ module Table {
         date: number;
         start: number;
         end: number;
-        event: string;
+        myevent: string;
         location: string;
     }
 
@@ -20,7 +20,7 @@ module Table {
                 date: 0,
                 start: 0,
                 end: 0,
-                event: '',
+                myevent: '',
                 location: ''
             }
         }
@@ -31,6 +31,7 @@ module Table {
         static template:any = _.template( $('#row-template').html() );
         constructor (options: any) {
             super(options);
+            this.model.bind('remove', ()=>this.remove());
         }
         
         remove (): PersonView  {
