@@ -51,6 +51,9 @@
             </div>
             <div class="panel-body">
                     <table id="tableone" class="table table-condensed">
+                        <tr>
+                            <th>Date</th><th>Start</th><th>End</th><th>Event</th><th>Location</th>
+                        </tr>
                         <script id="row-template" type="text/template">
                             <td class="date">
                                 <span><%=date%></span>

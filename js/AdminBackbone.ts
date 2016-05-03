@@ -42,7 +42,7 @@ module Table {
         render (): PersonView {
             var data = this.model.toJSON();
             data.date = moment.unix(data.date).format('MM DD YYYY');
-            data.start = moment.unix(data.start).format('MM DD h:mm');
+            data.start = moment.unix(data.start).format('h:mm a');
             this.$el.html( PersonView.template(data) );
             return this;
         }
