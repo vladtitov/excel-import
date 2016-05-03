@@ -7,8 +7,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Table;
-(function (Table) {
+var MyScreen;
+(function (MyScreen) {
     var Person = (function (_super) {
         __extends(Person, _super);
         function Person() {
@@ -16,16 +16,14 @@ var Table;
         }
         Person.prototype.defaults = function () {
             return {
-                date: 0,
-                start: 0,
-                end: 0,
+                time: '',
                 myevent: '',
                 location: ''
             };
         };
         return Person;
     }(Backbone.Model));
-    Table.Person = Person;
+    MyScreen.Person = Person;
     var PersonView = (function (_super) {
         __extends(PersonView, _super);
         function PersonView(options) {
@@ -39,16 +37,16 @@ var Table;
         };
         PersonView.prototype.render = function () {
             var data = this.model.toJSON();
-            data.date = moment.unix(data.date).format('MM DD YYYY');
-            data.start = moment.unix(data.start).format('h:mm a');
-            data.end = moment.unix(data.end).format('h:mm a');
+            var start = moment.unix(data.start).format('h:mm a');
+            var end = moment.unix(data.end).format('h:mm a');
+            data.time = start + ' - ' + end;
             this.$el.html(PersonView.template(data));
             return this;
         };
         PersonView.template = _.template($('#row-template').html());
         return PersonView;
     }(Backbone.View));
-    Table.PersonView = PersonView;
+    MyScreen.PersonView = PersonView;
     var AllPersonCollection = (function (_super) {
         __extends(AllPersonCollection, _super);
         function AllPersonCollection(options) {
@@ -58,7 +56,7 @@ var Table;
         }
         return AllPersonCollection;
     }(Backbone.Collection));
-    Table.AllPersonCollection = AllPersonCollection;
+    MyScreen.AllPersonCollection = AllPersonCollection;
     var AllPersonView = (function (_super) {
         __extends(AllPersonView, _super);
         function AllPersonView(options) {
@@ -74,6 +72,6 @@ var Table;
         };
         return AllPersonView;
     }(Backbone.View));
-    Table.AllPersonView = AllPersonView;
-})(Table || (Table = {}));
-//# sourceMappingURL=AdminBackbone.js.map
+    MyScreen.AllPersonView = AllPersonView;
+})(MyScreen || (MyScreen = {}));
+//# sourceMappingURL=ScreenBackbone.js.map

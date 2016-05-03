@@ -6,13 +6,9 @@ var myapp;
 (function (myapp) {
     var Main = (function () {
         function Main(opt) {
-            var _this = this;
             for (var str in opt) {
                 this[str] = opt[str];
             }
-            var plus = $('#btn-plus').click(function () {
-                _this.onPlusClick(plus);
-            });
         }
         Main.prototype.parseXLS = function (data) {
             var book = XLS.read(data, { type: 'binary' });
@@ -47,8 +43,31 @@ var myapp;
                 });
             });
         };
+        Main.prototype.InitTable = function () {
+            var _this = this;
+            var collection = new MyScreen.AllPersonCollection({});
+            var tableView = new MyScreen.AllPersonView({ collection: collection });
+            this.collection = collection;
+            setInterval(function () {
+                _this.loadData();
+            }, 5000);
+        };
+        Main.prototype.loadData = function () {
+            this.collection.fetch({ url: this.url_data, data: { time: this.today } });
+        };
         return Main;
     }());
     myapp.Main = Main;
 })(myapp || (myapp = {}));
-//# sourceMappingURL=Main.js.map
+$(document).ready(function () {
+    var options = {
+        // url_upload_temp:'service/upload-temp.php',
+        // url_get_excel:'service/get-excel.php',
+        url_data: 'service/screen-data.php',
+        today: '2016-04-18'
+    };
+    var app = new myapp.Main(options);
+    app.InitTable();
+    app.loadData();
+});
+//# sourceMappingURL=MyScreen.js.map

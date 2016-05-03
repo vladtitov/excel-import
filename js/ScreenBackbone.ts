@@ -4,11 +4,9 @@
 ///<reference path="base.ts"/>
 
     
-module Table {
+module MyScreen {
     interface People {
-        date: number;
-        start: number;
-        end: number;
+        time: string;
         myevent: string;
         location: string;
     }
@@ -16,9 +14,7 @@ module Table {
     export class Person extends Backbone.Model{
         defaults() : People{
             return {
-                date: 0,
-                start: 0,
-                end: 0,
+                time: '',
                 myevent: '',
                 location: ''
             }
@@ -41,9 +37,10 @@ module Table {
         
         render (): PersonView {
             var data = this.model.toJSON();
-            data.date = moment.unix(data.date).format('MM DD YYYY');
-            data.start = moment.unix(data.start).format('h:mm a');
-            data.end = moment.unix(data.end).format('h:mm a');
+            var start = moment.unix(data.start).format('h:mm a');
+            var end = moment.unix(data.end).format('h:mm a');
+            data.time = start + ' - ' + end;
+            
             this.$el.html( PersonView.template(data) );
             return this;
         }

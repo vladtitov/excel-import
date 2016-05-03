@@ -4,6 +4,7 @@
     ///<reference path="base.ts"/>
 
 module myapp{
+    //import color = d3.color;
     interface CellInfo{
         raw:number;
         type:string;
@@ -22,7 +23,7 @@ module myapp{
         date: number;
         start: number;
         end: number;
-        event: string;
+        myevent: string;
         location: string;
     }
 
@@ -32,42 +33,58 @@ module myapp{
         private url_ret: string;
         private url_upload_temp: string;
         private url_get_excel: string;
-        private url_save_data: string;
-        private url_get_data: string = 'service/get-data.php?filename=allData.json';
-
-        onData(data:XLSresult[]):void{
-            var out:string[][]=[];
-            var sheet = data[0];
-            console.log(data);
-            _.map(sheet.cells,function(item){
-                console.log(item)
-                out.push(item)
-            })
-            console.log(out);
-        }
+        private url_data: string;
+        private username:string;
         private collection: Table.AllPersonCollection;
 
+        private $btnSave:JQuery;
         InitTable (){
             var collection: Table.AllPersonCollection = new Table.AllPersonCollection({});
             var tableView: Table.AllPersonView = new Table.AllPersonView({collection: collection});
             this.collection = collection;
+
         }
 
-        CallData (){
-            $.get(this.url_get_data).done((res)=>{
-                console.log(res);
-            })
+        loadData():void{
+            this.collection.fetch({url:this.url_data,data:{username:this.username}});
         }
 
         SetData (res){
+            console.log(res);
             this.collection.set(res);
         }
 
+        saveData():void{
+            if(confirm('You want to save a new data file?')){
+                var data:any[] =  this.collection.toJSON();
+                $.post(this.url_data+'?username='+this.username,JSON.stringify(data)).done((res)=>{
+
+                    if(res.success=='success') {
+                        alert('New data was saved on server');
+                        this.loadData();
+                    }
+                    else alert('Error save data')
+                });
+            }
+
+
+        }
+
+        $fileInput:JQuery;
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
             }
+            this.$btnSave = $('#btn-save').click(()=>{
+                this.saveData();
+            });
             var plus = $('#btn-plus').click(()=>{
+
+                if(this.$fileInput){
+                    this.$fileInput.remove();
+                    this.$fileInput = null;
+                    return;
+                }
 
                 var input = $('<input type="file">').appendTo(plus.parent()).change(()=>{
                     var el: HTMLInputElement = input.get(0);
@@ -84,13 +101,16 @@ module myapp{
                         contentType: false,
                         processData: false
                     }).done((res)=>{
-                        console.log(res);
+                        //console.log(res);
                         $.get(this.url_get_excel, {filename: res.result}).done((res)=>{
                             this.SetData(res);
                         })
                       // this.onData(res);
                     })
+                    input.remove()
+                    this.$fileInput = null;
                 })
+                this.$fileInput = input;
             })
         }
     }
@@ -100,9 +120,11 @@ $(document).ready(function(){
     var options = {
         url_upload_temp:'service/upload-temp.php',
         url_get_excel:'service/get-excel.php',
-        url_save_data:'service/save-data.php'
+        url_data:'service/my-data.php',
+        username:'myname'
     }
     var app = new myapp.Main(options);
     app.InitTable();
+    app.loadData();
 })
 

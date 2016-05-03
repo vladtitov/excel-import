@@ -6,9 +6,6 @@ echo json_encode($result);
 
 function saveUploaded($file,$folder){
     $out=new stdClass();
-//    var_dump($file);
-//    return $file;
-//    $file = $file['file'];
     if ($file["error"] > 0){
         $out->error= $file["error"];
         switch ($file["error"]) {

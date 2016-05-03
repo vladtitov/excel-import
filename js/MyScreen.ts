@@ -45,13 +45,42 @@ module myapp{
             })
         }
 
+        private url_data: string;
+        private today:string;
+        private collection: MyScreen.AllPersonCollection;
+        
+        InitTable (){
+            var collection: MyScreen.AllPersonCollection = new MyScreen.AllPersonCollection({});
+            var tableView: MyScreen.AllPersonView = new MyScreen.AllPersonView({collection: collection});
+            this.collection = collection;
+            setInterval(()=>{
+                this.loadData();
+            }, 5000);
+
+        }
+
+        loadData():void{
+            this.collection.fetch({url:this.url_data,data:{time:this.today}});
+        }
+
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
             }
-            var plus = $('#btn-plus').click(()=>{
-                this.onPlusClick(plus);
-            })
+            
         }
     }
 }
+
+$(document).ready(function () {
+    var options = {
+        // url_upload_temp:'service/upload-temp.php',
+        // url_get_excel:'service/get-excel.php',
+        url_data:'service/screen-data.php',
+        today:'2016-04-18'
+    }
+    var app = new myapp.Main(options);
+    app.InitTable();
+    
+    app.loadData();
+})

@@ -7,11 +7,18 @@ var myapp;
     var Main = (function () {
         function Main(opt) {
             var _this = this;
-            this.url_get_data = 'service/get-data.php?filename=allData.json';
             for (var str in opt) {
                 this[str] = opt[str];
             }
+            this.$btnSave = $('#btn-save').click(function () {
+                _this.saveData();
+            });
             var plus = $('#btn-plus').click(function () {
+                if (_this.$fileInput) {
+                    _this.$fileInput.remove();
+                    _this.$fileInput = null;
+                    return;
+                }
                 var input = $('<input type="file">').appendTo(plus.parent()).change(function () {
                     var el = input.get(0);
                     var files = el.files;
@@ -27,37 +34,43 @@ var myapp;
                         contentType: false,
                         processData: false
                     }).done(function (res) {
-                        console.log(res);
+                        //console.log(res);
                         $.get(_this.url_get_excel, { filename: res.result }).done(function (res) {
                             _this.SetData(res);
                         });
                         // this.onData(res);
                     });
+                    input.remove();
+                    _this.$fileInput = null;
                 });
+                _this.$fileInput = input;
             });
         }
-        Main.prototype.onData = function (data) {
-            var out = [];
-            var sheet = data[0];
-            console.log(data);
-            _.map(sheet.cells, function (item) {
-                console.log(item);
-                out.push(item);
-            });
-            console.log(out);
-        };
         Main.prototype.InitTable = function () {
             var collection = new Table.AllPersonCollection({});
             var tableView = new Table.AllPersonView({ collection: collection });
             this.collection = collection;
         };
-        Main.prototype.CallData = function () {
-            $.get(this.url_get_data).done(function (res) {
-                console.log(res);
-            });
+        Main.prototype.loadData = function () {
+            this.collection.fetch({ url: this.url_data, data: { username: this.username } });
         };
         Main.prototype.SetData = function (res) {
+            console.log(res);
             this.collection.set(res);
+        };
+        Main.prototype.saveData = function () {
+            var _this = this;
+            if (confirm('You want to save a new data file?')) {
+                var data = this.collection.toJSON();
+                $.post(this.url_data + '?username=' + this.username, JSON.stringify(data)).done(function (res) {
+                    if (res.success == 'success') {
+                        alert('New data was saved on server');
+                        _this.loadData();
+                    }
+                    else
+                        alert('Error save data');
+                });
+            }
         };
         return Main;
     }());
@@ -67,9 +80,11 @@ $(document).ready(function () {
     var options = {
         url_upload_temp: 'service/upload-temp.php',
         url_get_excel: 'service/get-excel.php',
-        url_save_data: 'service/save-data.php'
+        url_data: 'service/my-data.php',
+        username: 'myname'
     };
     var app = new myapp.Main(options);
     app.InitTable();
+    app.loadData();
 });
 //# sourceMappingURL=Admin.js.map
