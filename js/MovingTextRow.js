@@ -16,8 +16,14 @@ var movingtext;
             this.loadData();
         }
         MovingTextRow.prototype.onScrollEnd = function () {
+            var _this = this;
             this.render();
+            this.stop();
             this.position = 0;
+            setTimeout(function () {
+                _this.start();
+                _this.scroll();
+            }, 5000);
         };
         MovingTextRow.prototype.scroll = function () {
             var _this = this;
@@ -51,9 +57,9 @@ var movingtext;
         MovingTextRow.prototype.render = function () {
             console.log('render    ');
             var mov = $('<div>');
-            var p1 = $('<p>').width(this.width).css('display', 'inline-block').appendTo(mov);
+            var p1 = $('<p>').width(this.width + 10).css('display', 'inline-block').appendTo(mov);
             var p2 = $('<p>').html(this.messages.join(this.separator)).appendTo(mov);
-            var p3 = $('<p>').width(this.width).css('display', 'inline-block').appendTo(mov);
+            var p3 = $('<p>').width(this.width + 10).css('display', 'inline-block').appendTo(mov);
             this.$el.empty();
             this.$el.append(mov);
         };
@@ -65,7 +71,8 @@ var MTROptions = {
     selector: "#MovingText",
     url: "http://callcenter.front-desk.ca/service/crawl",
     requestParams: { a: "get" },
-    interval: 25000
+    interval: 25000,
+    speed: 10
 };
 var movingTextRow = new movingtext.MovingTextRow(MTROptions);
 //# sourceMappingURL=MovingTextRow.js.map

@@ -123,7 +123,7 @@
             }
             #MovingText{
                 margin-top: 2vh;
-                font-size: 3vh;
+                font-size: 4vh;
                 overflow: hidden;
             }
             #MovingText>div{

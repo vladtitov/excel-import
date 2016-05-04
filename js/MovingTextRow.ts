@@ -26,7 +26,12 @@ module movingtext{
 
       private onScrollEnd():void{
           this.render();
+          this.stop();
           this.position = 0;
+          setTimeout(()=>{
+              this.start();
+              this.scroll();
+          },5000);
       }
       private prev:number;
       scroll():void{
@@ -61,9 +66,9 @@ module movingtext{
         private render(){
             console.log('render    ');
             var mov =  $('<div>');
-            var p1  = $('<p>').width(this.width).css('display','inline-block').appendTo(mov);
+            var p1  = $('<p>').width(this.width+10).css('display','inline-block').appendTo(mov);
             var p2  = $('<p>').html(this.messages.join(this.separator)).appendTo(mov);
-            var p3  = $('<p>').width(this.width).css('display','inline-block').appendTo(mov);
+            var p3  = $('<p>').width(this.width+10).css('display','inline-block').appendTo(mov);
             this.$el.empty();
             this.$el.append(mov);
         }
@@ -75,5 +80,6 @@ var MTROptions={
     url:"http://callcenter.front-desk.ca/service/crawl",
     requestParams:{a:"get"},
     interval:25000,
+    speed:10
 }
 var movingTextRow = new movingtext.MovingTextRow(MTROptions);
