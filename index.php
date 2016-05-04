@@ -121,14 +121,24 @@
                 height: 9vh;
                 color: white;
             }
-            #MovingTextRow{
+            #MovingText{
                 margin-top: 2vh;
                 font-size: 3vh;
+                overflow: hidden;
             }
+            #MovingText>div{
+                white-space: nowrap;
+
+            }
+            #MovingText>div>p{
+                display: inline-block;
+            }
+
 
         </style>
         <div class="col-md-9">
-            <marquee id="MovingTextRow"  truespeed></marquee>
+            <div id="MovingText">                
+            </div>           
             <script  src="js/MovingTextRow.js"></script>
         </div>
         <div class="col-md-3">

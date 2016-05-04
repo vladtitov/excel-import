@@ -1,28 +1,44 @@
 ///<reference path="base.ts"/>
 module movingtext{
-  export  class MovingTextRow{
-        private timer:number;
-        private interval:number=200000;
-        private scrollWidth
+  export  class MovingTextRow{       
+        private interval:number=200000;       
+        private width:number;
         private isFirstTime:boolean=true;
-        private separator="\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"
+        private separator="&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
         $el:JQuery;
         url:string;
         requestParams:any;
         messages:Array<string>;
+      private position:number =0;
+      private speed:number=1;
+
+
+      isRuning:boolean
 
         constructor(options:any){
             for(var str in options)this[str]=options[str];
             this.$el=$(options.selector);
-            this.$el.on("scroll",()=>{this.onScroll();});
-            this.start()
-            this.loadData();
+            this.width = this.$el.width();
+            this.start();
+           this.loadData();
         }
 
-        start():void{
-            this.timer=setInterval(()=>{
-              this.loadData();
-            },this.interval);
+
+      private onScrollEnd():void{
+          this.render();
+          this.position = 0;
+      }
+      private prev:number;
+      scroll():void{
+          if(this.isRuning)requestAnimationFrame(()=>{  this.scroll(); });
+          this.$el.scrollLeft(this.position+=this.speed);
+          var w = this.$el.scrollLeft();
+          if(this.prev ==w)this.onScrollEnd();
+          this.prev = w;
+          //console.log(w +'  '+ this.width);
+      }
+        start():void {
+            this.isRuning = true
         }
 
       loadData():void{
@@ -33,30 +49,29 @@ module movingtext{
               if (this.isFirstTime){
                   this.render();
                   this.isFirstTime=false;
+                  this.scroll();
               }
           });
       }
 
-         Stop(){
-            clearInterval(this.timer);
+         stop(){
+             this.isRuning = false;
         }
 
         private render(){
             console.log('render    ');
-
-            this.$el.html(this.messages.join(this.separator));
-            setTimeout(()=>{this.scrollWidth=this.$el.get(0).scrollWidth -this.$el.get(0).offsetWidth},10) ;
+            var mov =  $('<div>');
+            var p1  = $('<p>').width(this.width).css('display','inline-block').appendTo(mov);
+            var p2  = $('<p>').html(this.messages.join(this.separator)).appendTo(mov);
+            var p3  = $('<p>').width(this.width).css('display','inline-block').appendTo(mov);
+            this.$el.empty();
+            this.$el.append(mov);
         }
-
-        private onScroll():void{
-            if (this.$el.scrollLeft()>=this.scrollWidth){
-                this.render();
-            }
-        }
+       
     }
 }
 var MTROptions={
-    selector:"#MovingTextRow",
+    selector:"#MovingText",
     url:"http://callcenter.front-desk.ca/service/crawl",
     requestParams:{a:"get"},
     interval:25000,
