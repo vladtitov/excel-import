@@ -80,6 +80,6 @@ var MTROptions={
     url:"http://callcenter.front-desk.ca/service/crawl",
     requestParams:{a:"get"},
     interval:25000,
-    speed:10
+    speed:1
 }
 var movingTextRow = new movingtext.MovingTextRow(MTROptions);
