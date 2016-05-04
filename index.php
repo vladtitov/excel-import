@@ -122,6 +122,7 @@
                 color: white;
             }
             #MovingText{
+
                 margin-top: 2vh;
                 font-size: 4vh;
                 overflow: hidden;
@@ -142,6 +143,45 @@
             <script  src="js/MovingTextRow.js"></script>
         </div>
         <div class="col-md-3">
+            <div id="Clock" class="text-center">
+                <style>
+                    #Clock{
+                        color: white;
+                    }
+                    #ClockTime{
+                        font-size: xx-large;
+                    }
+
+                    #ClockDate{
+                        font-size: x-large;
+                    }
+                </style>
+
+                <div id="ClockTime">
+                    12:34 PM
+                </div>
+                <div id="ClockDate">
+                    March 09, 2106
+
+                </div>
+
+                <script>
+
+                    setInterval(function(){
+                        $('#ClockTime').text( moment().format('LT'));
+                    },5000);
+
+                    $('#ClockTime').text( moment().format('LT'));
+                    $('#ClockDate').text( moment().format('LL'));
+                    setInterval(function(){
+                        $('#ClockDate').text( moment().format('LL'));
+                    },100000);
+
+
+
+
+                </script>
+            </div>
 
         </div>
 
