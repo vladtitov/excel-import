@@ -1,0 +1,1 @@
+RewriteEngine OnRewriteRule ^([^/.]+)$ $1.php [L]

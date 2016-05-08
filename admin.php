@@ -1,3 +1,13 @@
+<?php
+require('service/User.php');
+$user = new User();
+if($user->isAdmin()){
+
+}else{
+   include ('Login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +27,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
     <script src="libs/moment.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" rel="stylesheet">
-    
+
 </head>
 <body>
 <div id="Table1" class="container">
@@ -42,6 +52,22 @@
                         </a>
                     </div>
 
+                <div class="pull-right" >
+                    <a id="btn-logout" class="btn">
+                        <span class="fa fa-sign-out"></span>
+                        <span>Logout</span>
+                    </a>
+                    <script>
+                        $('#btn-logout').click(function(){
+                            $.get('service/login.php',{a:'logout'}).done(function(res){
+                                console.log(res)
+                                window.location.reload();
+                            }).fail(function(res){
+                                window.location.reload();
+                            })
+                        })
+                    </script>
+                </div>
                     <div class="pull-right" >
                         <a id="btn-save" class="btn">
                             <span class="fa fa-save"></span>
