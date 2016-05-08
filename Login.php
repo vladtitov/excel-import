@@ -37,6 +37,7 @@
             background-color: #faebcc;
             border-radius: 5px;
             box-shadow: 5px 5px 5px gray;
+            font-size: small;
         }
 
 
@@ -51,7 +52,7 @@
                 <a style="font-size: x-small"  title="Forget username or password" class="btn pull-right" data-id="forget" href="#RestoreUser">Forget username/password</a>
                 <div class="panel-body">
                     <div style="position: relative">
-                        <div id="Message" class="hidden" data-id="message">
+                        <div id="Message" style="display: none"  data-id="message">
 
                         </div>
                     </div>
@@ -124,6 +125,13 @@
                 $(document).ready(function(){
                     var initLogin = function(){
                         var submit = $('#LoginForm [type=submit]');
+                        var form = $( '#LoginForm form' ).submit(function( evt){
+                            evt.preventDefault();
+                            onSubmit();
+                        });
+                        form.find('input').focus(function(){
+                            $('#Message').hide('slow');
+                        });
                         var onSubmit = function(){
                             var valid = true;
                             submit.attr('disabled',true);
@@ -136,6 +144,9 @@
                             $.post('service/login.php',obj).done(function(res){
                                 console.log(res);
                                 if(res.success=='success')    window.location.reload();
+                                else {
+                                    $('#Message').html(res.result).show('fast');
+                                }
                                 submit.attr('disabled',false);
 
                             }).fail(function(err){
@@ -146,10 +157,7 @@
                         };
 
 
-                        var form = $( '#LoginForm form' ).submit(function( evt){
-                            evt.preventDefault();
-                            onSubmit();
-                        });
+
 
 
 
