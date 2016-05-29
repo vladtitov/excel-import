@@ -66,6 +66,7 @@ if($user->isAdmin()){
                     <a id="btnDelete" class="btn">
                         <span class="fa fa-remove"></span>
                         <span>Delete</span>
+                        
                     </a>
                 </div>
 
