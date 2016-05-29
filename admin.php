@@ -43,6 +43,9 @@ if($user->isAdmin()){
                         height: 600px;
                         overflow: auto;
                     }
+                   #Table1 tr.selected {
+                        background-color: khaki;
+                    }
 
                 </style>
                     <div>
@@ -51,6 +54,27 @@ if($user->isAdmin()){
                             <span>Import</span>
                         </a>
                     </div>
+
+                <div>
+                    <a id="btnEdit" class="btn">
+                        <span class="fa fa-edit"></span>
+                        <span>Edit</span>
+                    </a>
+                </div>
+
+                <div>
+                    <a id="btnDelete" class="btn">
+                        <span class="fa fa-remove"></span>
+                        <span>Delete</span>
+                    </a>
+                </div>
+
+                <div>
+                    <a id="btnPreview" class="btn" href="index.php">
+                        <span class="fa fa-eye"></span>
+                        <span>Preview</span>
+                    </a>
+                </div>
 
                 <div class="pull-right" >
                     <a id="btn-logout" class="btn">
@@ -104,6 +128,7 @@ if($user->isAdmin()){
             </div>
 
     </div>
+
 
 
 <!--    <script src="libs/xls.min.js" ></script>-->

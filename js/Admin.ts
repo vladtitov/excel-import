@@ -36,7 +36,8 @@ module myapp{
         private url_data: string;
         private username:string;
         private collection: Table.AllPersonCollection;
-
+        
+        
         private $btnSave:JQuery;
         InitTable (){
             var collection: Table.AllPersonCollection = new Table.AllPersonCollection({});
@@ -71,12 +72,20 @@ module myapp{
         }
 
         $fileInput:JQuery;
+        $btnDel:JQuery;
+        $btnEdit:JQuery;
         constructor(opt:any){
             for(var str in opt){
                 this[str] = opt[str];
             }
             this.$btnSave = $('#btn-save').click(()=>{
                 this.saveData();
+            });
+            this.$btnDel = $('#btnDelete').click(()=>{
+                this.onDeleteClick();
+            });
+            this.$btnEdit = $('#btnEdit').click(()=>{
+                this.onEditClick();
             });
             var plus = $('#btn-plus').click(()=>{
 
@@ -113,6 +122,20 @@ module myapp{
                 this.$fileInput = input;
             })
         }
+        
+        onDeleteClick():void {
+            if(confirm('Do you want to delete?')){
+                this.collection.setDestroy();
+                // console.log('Yes');
+            }
+            else{
+                // console.log('No');
+            }
+                
+        }
+        onEditClick():void{
+            this.collection.setEditable();
+        }
     }
 
 }
@@ -122,6 +145,8 @@ $(document).ready(function(){
         url_get_excel:'service/get-excel.php',
         url_data:'service/my-data.php',
         username:'myname'
+        // btnDelete:'#btnDelete',
+        // btnEdit:'#btnEdit'
     }
     var app = new myapp.Main(options);
     app.InitTable();

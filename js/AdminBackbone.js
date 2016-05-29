@@ -20,7 +20,9 @@ var Table;
                 start: 0,
                 end: 0,
                 myevent: '',
-                location: ''
+                selected: false,
+                location: '',
+                editable: false
             };
         };
         return Person;
@@ -31,8 +33,48 @@ var Table;
         function PersonView(options) {
             var _this = this;
             _super.call(this, options);
-            this.model.bind('remove', function () { return _this.remove(); });
+            this.model.on('remove', function () { return _this.remove(); });
+            this.$el.on('click', function (evt) { return _this.edit(evt); });
+            this.model.on('change:selected', function () {
+                if (_this.model.get('selected')) {
+                    _this.$el.addClass('warning');
+                }
+                else {
+                    _this.$el.removeClass();
+                    _this.model.set('editable', false);
+                }
+            });
+            this.model.on('change:editable', function () {
+                if (_this.model.get('editable')) {
+                    _this.makeEditable();
+                }
+                else {
+                    _this.$el.find('.myevent').attr('contenteditable', false);
+                    _this.$el.find('.location').attr('contenteditable', false);
+                }
+            });
         }
+        PersonView.prototype.edit = function (evt) {
+            if (!this.model.get('selected')) {
+                this.model.trigger('selectedModel', this.model);
+            }
+            else {
+                this.model.set('editable', true);
+            }
+        };
+        PersonView.prototype.makeEditable = function () {
+            var _this = this;
+            this.$el.removeClass('warning').addClass('info');
+            var myevent = this.$el.find('.myevent').attr('contenteditable', true);
+            var mylocation = this.$el.find('.location').attr('contenteditable', true);
+            myevent.blur(function () {
+                console.log(myevent.text());
+                _this.model.set('myevent', myevent.children().text());
+            });
+            mylocation.blur(function () {
+                _this.model.set('location', mylocation.children().text());
+            });
+        };
         PersonView.prototype.remove = function () {
             this.$el.remove();
             return this;
@@ -55,7 +97,25 @@ var Table;
             _super.call(this, options);
             for (var str in options)
                 this[str] = options[str];
+            this.listenTo(this, 'selectedModel', this.ModelSelected);
         }
+        AllPersonCollection.prototype.setEditable = function () {
+            if (this.selectedModel) {
+                this.selectedModel.set('editable', true);
+            }
+        };
+        AllPersonCollection.prototype.setDestroy = function () {
+            if (this.selectedModel) {
+                this.remove(this.selectedModel);
+            }
+        };
+        AllPersonCollection.prototype.ModelSelected = function (model) {
+            if (this.selectedModel) {
+                this.selectedModel.set('selected', false);
+            }
+            model.set('selected', true);
+            this.selectedModel = model;
+        };
         return AllPersonCollection;
     }(Backbone.Collection));
     Table.AllPersonCollection = AllPersonCollection;

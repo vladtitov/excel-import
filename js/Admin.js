@@ -13,6 +13,12 @@ var myapp;
             this.$btnSave = $('#btn-save').click(function () {
                 _this.saveData();
             });
+            this.$btnDel = $('#btnDelete').click(function () {
+                _this.onDeleteClick();
+            });
+            this.$btnEdit = $('#btnEdit').click(function () {
+                _this.onEditClick();
+            });
             var plus = $('#btn-plus').click(function () {
                 if (_this.$fileInput) {
                     _this.$fileInput.remove();
@@ -71,6 +77,16 @@ var myapp;
                         alert('Error save data');
                 });
             }
+        };
+        Main.prototype.onDeleteClick = function () {
+            if (confirm('Do you want to delete?')) {
+                this.collection.setDestroy();
+            }
+            else {
+            }
+        };
+        Main.prototype.onEditClick = function () {
+            this.collection.setEditable();
         };
         return Main;
     }());
