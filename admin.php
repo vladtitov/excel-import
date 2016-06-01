@@ -1,10 +1,10 @@
 <?php
-require('service/User.php');
+require('service/user.php');
 $user = new User();
 if($user->isAdmin()){
 
 }else{
-   include ('Login.php');
+   include('login.php');
     exit;
 }
 ?>
