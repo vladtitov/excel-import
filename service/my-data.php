@@ -1,7 +1,7 @@
 <?php
 if(!isset($_GET['username']) || $_GET['username'] !='myname')  die('hello');
 $out = new stdClass();
-require('User.php');
+require('user.php');
 $user = new User();
 if(!$user->isAdmin()){
     $out->result='Please login';

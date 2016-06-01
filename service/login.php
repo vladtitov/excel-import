@@ -1,6 +1,6 @@
 <?php
 ini_set('html_errors', false);
-require ('user.php');
+require('user.php');
 $out = new stdClass();
 $user = new User();
 $input = new stdClass();

@@ -8,7 +8,7 @@ $filename = $_GET['filename'];
     $out =  $reader->sheets;
 
 $sheet = $reader->sheets[0];
-$out =[];
+$out = array();
 $ar = $sheet['cells'];
 $i=0;
 
